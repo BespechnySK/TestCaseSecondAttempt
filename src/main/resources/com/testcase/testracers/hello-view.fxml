@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="574.0" prefWidth="632.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.testcase.testracers.RaceController">
+   <children>
+      <Pane fx:id="circlePane" layoutX="14.0" layoutY="14.0" prefHeight="280.0" prefWidth="280.0" style="-fx-background-color: #FA8072;">
+         <children>
+            <Button layoutY="254.0" mnemonicParsing="false" onAction="#startRace" prefHeight="25.0" prefWidth="80.0" text="Старт" />
+            <Button layoutX="80.0" layoutY="254.0" mnemonicParsing="false" onAction="#clearRace" text="очистить" />
+            <TextField fx:id="raceLenght" layoutY="229.0" prefHeight="25.0" prefWidth="80.0" promptText="расстояние" />
+         </children>
+      </Pane>
+      <Pane layoutX="325.0" layoutY="15.0" prefHeight="545.0" prefWidth="302.0">
+         <children>
+            <VBox fx:id="racersPane" layoutY="34.0" prefHeight="511.0" prefWidth="290.0" style="-fx-background-color: #E0FFFF;" />
+            <Button layoutX="14.0" layoutY="2.0" mnemonicParsing="false" onAction="#newCar" text="Машина" />
+            <Button layoutX="76.0" layoutY="2.0" mnemonicParsing="false" onAction="#newTruck" text="Грузовик" />
+            <Button layoutX="142.0" layoutY="2.0" mnemonicParsing="false" onAction="#newMoto" text="Мотоцикл" />
+            <Button layoutX="214.0" layoutY="2.0" mnemonicParsing="false" onAction="#fromFile" text="Из файла" />
+         </children>
+      </Pane>
+      <TableView fx:id="placeTable" layoutX="14.0" layoutY="306.0" prefHeight="254.0" prefWidth="280.0">
+        <columns>
+          <TableColumn fx:id="placeColumn" prefWidth="47.0" text="Место" />
+          <TableColumn fx:id="racerColumn" prefWidth="152.0" text="Гонщик" />
+        </columns>
+      </TableView>
+   </children>
+</Pane>
