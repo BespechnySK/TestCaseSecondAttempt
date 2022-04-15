@@ -4,5 +4,6 @@ public interface Racer {
     public String getStartInfo();
     public RacerInfo getRaceInfo();
     public void move();
+    public void step();
 
 }

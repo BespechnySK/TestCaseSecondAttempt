@@ -21,6 +21,9 @@ public class RacerInfo {
         } else
         return "";
     }
+    public String toString(){
+        return this.getName()+" "+ String.format("%.0f",this.getDistance())+ this.isBlow();
+    }
     public Auto getAuto(){
         return this.auto;
     }

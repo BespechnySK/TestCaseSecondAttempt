@@ -1,7 +1,10 @@
 package com.testcase.testracers.view;
 
+import com.testcase.testracers.logic.Racer;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
+
+import java.util.Objects;
 
 public class TruckView extends AutoView {
     TextField cargo;
@@ -19,9 +22,15 @@ public class TruckView extends AutoView {
         this.cargo.setLayoutX(155);
         this.cargo.setLayoutY(10);
         this.cargo.setPrefWidth(60);
-        this.img.setImage(new Image(getClass().getResourceAsStream("truck.jpg")));
+        this.img.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("truck.jpg"))));
     }
     public int getCargo(){
-        return Integer.valueOf(cargo.getText());
+        return Integer.parseInt(cargo.getText());
+    }
+
+    @Override
+    public void beforeStart(Racer racer) {
+        super.beforeStart(racer);
+        this.getChildren().remove(cargo);
     }
 }

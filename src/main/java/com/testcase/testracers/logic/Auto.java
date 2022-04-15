@@ -22,6 +22,7 @@ abstract public class Auto implements Racer {
         this.repairTime = 15;
         this.repairProgress=0;
         this.blow=false;
+        this.racerInfo = new RacerInfo(this);
     }
 
     public void setBlow(boolean blow) {
@@ -60,13 +61,16 @@ abstract public class Auto implements Racer {
             this.setRepairProgress(this.getRepairTime());
             this.blow=true;
         } else {
-            this.setDistance(this.getSpeed()/100);
+            this.setDistance(this.getDistance()+this.getSpeed()/10);
         }
     }
     public void step() {
+        System.out.println("----");
         if (this.isBlow()){
+            System.out.println("repair");
             this.repair();
         } else {
+            System.out.println("move");
             this.move();
         };
     }
@@ -120,7 +124,7 @@ abstract public class Auto implements Racer {
     }
 
     protected boolean chekBlow(){
-        return Math.random() < this.blowChance;
+        return Math.random()*100 < this.blowChance;
     }
 
     protected String getBaseInfo(){

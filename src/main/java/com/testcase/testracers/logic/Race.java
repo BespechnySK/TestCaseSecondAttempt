@@ -16,6 +16,8 @@ public class Race {
         this.places=1;
         this.raceDistance=0;
         this.racers=new ArrayList<>();
+        this.inRace=new ArrayList<>();
+        this.finished= new ArrayList<>();
     }
 
     public void setRaceDistance(double raceDistance) {
@@ -44,7 +46,7 @@ public class Race {
         }
 
         for (Racer racer: inRace) {
-            racer.move();
+            racer.step();
             if (racer.getRaceInfo().getDistance()>raceDistance){
                 racer.getRaceInfo().getAuto().place=this.places++;
                 finished.add(racer);
@@ -56,6 +58,7 @@ public class Race {
 
     public void add(Racer racer){
         this.racers.add(racer);
+        this.inRace.add(racer);
     }
 
     public void remove(Racer racer){

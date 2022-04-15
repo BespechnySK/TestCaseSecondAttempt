@@ -5,6 +5,7 @@ import com.testcase.testracers.view.AutoView;
 import com.testcase.testracers.view.CarView;
 import com.testcase.testracers.view.MotoView;
 import com.testcase.testracers.view.TruckView;
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
@@ -39,6 +40,7 @@ public class RaceController {
     ArrayList<TruckView> trucks;
     ArrayList<MotoView> motos;
     Race race;
+    Timeline timeline;
 
     @FXML
     void fromFile(ActionEvent event) {
@@ -79,23 +81,45 @@ public class RaceController {
     }
     @FXML
     void startRace(ActionEvent event) {
-    race.setRaceDistance(Double.valueOf(raceLenght.getText()));
+    race.setRaceDistance(Double.parseDouble(raceLenght.getText()));
         int carsCount=1;
         for (CarView carv:cars
              ) {
-            race.getRacers().add(new Car(carv.getSpeed(),(byte)carv.getChansBlow(),"Машина"+carsCount++,carv.getPeoples()));
+            race.add(new Car(carv.getSpeed(),(byte)carv.getChansBlow(),"Машина"+carsCount++,carv.getPeoples()));
+            carv.beforeStart(race.getRacers().get(race.getRacers().size()-1));
         }
         for (TruckView truckv:trucks
         ) {
-            race.getRacers().add(new Truck(truckv.getSpeed(),(byte)truckv.getChansBlow(),"Грузовик"+carsCount++,truckv.getCargo()));
+            race.add(new Truck(truckv.getSpeed(),(byte)truckv.getChansBlow(),"Грузовик"+carsCount++,truckv.getCargo()));
+            truckv.beforeStart(race.getRacers().get(race.getRacers().size()-1));
         }
         for (MotoView motov:motos
         ) {
-            race.getRacers().add(new Moto(motov.getSpeed(),(byte)motov.getChansBlow(),"Мотоцикл"+carsCount++,motov.getSidecar()));
+            race.add(new Moto(motov.getSpeed(),(byte)motov.getChansBlow(),"Мотоцикл"+carsCount++,motov.getSidecar()));
+            motov.beforeStart(race.getRacers().get(race.getRacers().size()-1));
+        }
+
+    }
+    void updateViews(){
+
+        for (MotoView motov:motos
+             ) {
+            motov.updateInfo();
+        }
+        for (CarView carv:cars
+        ) {
+            carv.updateInfo();
+        }
+        for (TruckView truckv:trucks
+        ) {
+            truckv.updateInfo();
         }
     }
     @FXML
     void clearRace(ActionEvent event) {
+        race.raceStep();
+        updateViews();
+        System.out.println(race.getRacers().get(0).getRaceInfo().getDistance());
 
     }
 
@@ -105,6 +129,8 @@ public class RaceController {
         trucks=new ArrayList<>();
         motos=new ArrayList<>();
         race=new Race();
+        timeline= new Timeline();
+        timeline.setCycleCount(Timeline.INDEFINITE);
     }
 
 }
