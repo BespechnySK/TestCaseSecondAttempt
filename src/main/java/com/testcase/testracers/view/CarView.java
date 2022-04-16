@@ -2,6 +2,7 @@ package com.testcase.testracers.view;
 
 import com.testcase.testracers.logic.Race;
 import com.testcase.testracers.logic.Racer;
+import com.testcase.testracers.pars.JsonToCar;
 import javafx.scene.control.ComboBox;
 import javafx.scene.image.Image;
 
@@ -18,6 +19,11 @@ public class CarView extends AutoView{
         pass.getItems().addAll(1,2,3,4,5);
         this.pass.setValue(1);
         draw();
+    }
+
+    public void setFromJsonToCar(JsonToCar car) {
+        super.setInfo(car.getSpeed(), car.getBlow());
+        this.pass.setValue(car.getPass());
     }
 
     @Override

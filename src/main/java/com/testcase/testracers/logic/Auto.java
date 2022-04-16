@@ -65,14 +65,11 @@ abstract public class Auto implements Racer {
         }
     }
     public void step() {
-        System.out.println("----");
         if (this.isBlow()){
-            System.out.println("repair");
             this.repair();
         } else {
-            System.out.println("move");
             this.move();
-        };
+        }
     }
 
     public double getSpeed() {

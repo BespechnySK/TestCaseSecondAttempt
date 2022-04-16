@@ -2,12 +2,16 @@ package com.testcase.testracers.view;
 
 import com.testcase.testracers.logic.Auto;
 import com.testcase.testracers.logic.Racer;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+
+import java.util.regex.Pattern;
 
 public class AutoView extends Pane {
 TextField speed;
@@ -18,12 +22,23 @@ Label info;
 Racer racer;
 
     public AutoView() {
+     init();
+    }
+
+    public void init(){
         this.speed=new TextField();
         this.blow= new TextField();
         this.img = new ImageView();
         this.cancel=new Button("X");
         this.info=new Label();
+        this.regEx();
     }
+
+    protected void setInfo(double speed,double blow){
+        this.speed.setText(String.format("%.0f",speed));
+        this.blow.setText(String.format("%.0f",blow));
+    }
+
     protected void draw(){
         this.getChildren().addAll(speed,blow,img,cancel);
         this.img.setLayoutX(5);
@@ -56,6 +71,19 @@ Racer racer;
     }
     public void updateInfo(){
         this.info.setText(racer.getRaceInfo().toString());
+    }
+
+    public void regEx(){
+        speed.textProperty().addListener((observableValue, s, t1) -> {
+            if(!Pattern.matches("\\d{0,3}",t1)){
+                speed.setText(s);
+            }
+        });
+        blow.textProperty().addListener((observableValue, s, t1) -> {
+            if(!Pattern.matches("100|\\d{0,2}",t1)){
+                blow.setText(s);
+            }
+        });
     }
 
 }

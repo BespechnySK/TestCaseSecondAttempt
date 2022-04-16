@@ -1,5 +1,8 @@
 package com.testcase.testracers.logic;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +39,16 @@ public class Race {
         this.finished.clear();
         this.places=1;
         this.currentRaceTime=0;
+    }
+
+    public ObservableList<Auto> getFinishers(){
+        ObservableList<Auto> finishers= FXCollections.observableArrayList();
+        for (Racer racer:finished
+             ) {
+            finishers.add(racer.getRaceInfo().getAuto());
+
+        }
+        return finishers;
     }
 
 

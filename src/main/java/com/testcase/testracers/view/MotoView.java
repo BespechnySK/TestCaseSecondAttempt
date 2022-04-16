@@ -1,6 +1,8 @@
 package com.testcase.testracers.view;
 
 import com.testcase.testracers.logic.Racer;
+import com.testcase.testracers.pars.JsonToCar;
+import com.testcase.testracers.pars.JsonToMoto;
 import javafx.scene.control.CheckBox;
 import javafx.scene.image.Image;
 
@@ -13,6 +15,10 @@ public class MotoView extends AutoView{
         super();
         this.side=new CheckBox();
         draw();
+    }
+    public void setFromJsonToMoto(JsonToMoto moto) {
+        super.setInfo(moto.getSpeed(), moto.getBlow());
+        this.side.setSelected(moto.isSide());
     }
 
     @Override
