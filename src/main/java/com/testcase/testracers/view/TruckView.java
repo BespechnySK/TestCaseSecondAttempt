@@ -23,6 +23,13 @@ public class TruckView extends AutoView {
         this.cargo.setText(String.format("%.0f",truck.getCargo()));
 
     }
+
+    @Override
+    public void raceAgain() {
+        super.raceAgain();
+        this.getChildren().add(cargo);
+    }
+
     @Override
     protected void draw() {
         super.draw();
@@ -52,5 +59,10 @@ public class TruckView extends AutoView {
                 cargo.setText(s);
             }
         });
+    }
+
+    @Override
+    public boolean ckeckFool() {
+        return super.ckeckFool()&&!this.cargo.getText().isEmpty();
     }
 }

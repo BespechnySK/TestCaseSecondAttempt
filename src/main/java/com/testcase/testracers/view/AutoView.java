@@ -69,6 +69,12 @@ Racer racer;
         this.getChildren().add(info);
         this.updateInfo();
     }
+
+    public void raceAgain(){
+        this.getChildren().remove(info);
+        this.getChildren().addAll(speed,blow,cancel);
+    }
+
     public void updateInfo(){
         this.info.setText(racer.getRaceInfo().toString());
     }
@@ -84,6 +90,10 @@ Racer racer;
                 blow.setText(s);
             }
         });
+    }
+
+    public boolean ckeckFool(){
+        return !this.blow.getText().isEmpty() && !this.speed.getText().isEmpty();
     }
 
 }

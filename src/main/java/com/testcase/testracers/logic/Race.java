@@ -36,9 +36,15 @@ public class Race {
     }
 
     public void newRace(){
+        for (Racer racer :finished
+             ) {
+            racer.getRaceInfo().getAuto().setDistance(0);
+            racer.getRaceInfo().getAuto().setPlace(0);
+        }
         this.finished.clear();
         this.places=1;
         this.currentRaceTime=0;
+
     }
 
     public ObservableList<Auto> getFinishers(){
@@ -80,5 +86,9 @@ public class Race {
 
     public ArrayList<Racer> getFinished() {
         return finished;
+    }
+
+    public double getRaceDistance() {
+        return raceDistance;
     }
 }

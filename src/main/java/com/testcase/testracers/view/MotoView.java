@@ -22,6 +22,12 @@ public class MotoView extends AutoView{
     }
 
     @Override
+    public void raceAgain() {
+        super.raceAgain();
+        this.getChildren().add(side);
+    }
+
+    @Override
     protected void draw() {
         super.draw();
         this.getChildren().add(side);

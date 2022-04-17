@@ -11,4 +11,5 @@ module com.testcase.testracers {
     opens com.testcase.testracers.logic to javafx.fxml;
     exports com.testcase.testracers.pars;
     opens com.testcase.testracers.pars to javafx.fxml;
+    exports com.testcase.testracers.statistics to com.fasterxml.jackson.databind;
 }

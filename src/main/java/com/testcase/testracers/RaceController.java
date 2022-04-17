@@ -7,6 +7,7 @@ import com.testcase.testracers.pars.JsonToCar;
 import com.testcase.testracers.pars.JsonToMoto;
 import com.testcase.testracers.pars.JsonToRacers;
 import com.testcase.testracers.pars.JsonToTruck;
+import com.testcase.testracers.statistics.Statistics;
 import com.testcase.testracers.view.AutoView;
 import com.testcase.testracers.view.CarView;
 import com.testcase.testracers.view.MotoView;
@@ -32,10 +33,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.regex.Pattern;
 
 
@@ -72,9 +70,11 @@ public class RaceController {
     ArrayList<CarView> cars;
     ArrayList<TruckView> trucks;
     ArrayList<MotoView> motos;
+    ArrayList<AutoView> autos;
     Race race;
     Timeline timeline;
     KeyFrame keyFrame;
+    int carsCount=1;
 
     @FXML
     void fromFile(ActionEvent event) {
@@ -101,11 +101,14 @@ public class RaceController {
             e.printStackTrace();
         }
 
-
         for (JsonToCar car: Objects.requireNonNull(racersFromJson).getCars()
              ) {
             CarView carView = new CarView();
             carView.setFromJsonToCar(car);
+            carView.cancel.setOnAction(e->{
+                cars.remove(carView);
+                racersPane.getChildren().remove(carView);
+            });
             cars.add(carView);
             racersPane.getChildren().add(carView);
         }
@@ -113,6 +116,10 @@ public class RaceController {
         ) {
             TruckView truckView = new TruckView();
             truckView.setFromJsonToTruck(truck);
+            truckView.cancel.setOnAction(e->{
+                cars.remove(truckView);
+                racersPane.getChildren().remove(truckView);
+            });
             trucks.add(truckView);
             racersPane.getChildren().add(truckView);
         }
@@ -120,9 +127,14 @@ public class RaceController {
         ) {
             MotoView motoView = new MotoView();
             motoView.setFromJsonToMoto(moto);
+            motoView.cancel.setOnAction(e->{
+                cars.remove(motoView);
+                racersPane.getChildren().remove(motoView);
+            });
             motos.add(motoView);
             racersPane.getChildren().add(motoView);
         }
+        raceLenght.setText(String.valueOf(racersFromJson.getLenght()));
 
     }
 
@@ -160,32 +172,56 @@ public class RaceController {
     }
     @FXML
     void startRace(ActionEvent event) {
-    race.setRaceDistance(Double.parseDouble(raceLenght.getText()));
-        int carsCount=1;
-        for (CarView carv:cars
-             ) {
-            race.add(new Car(carv.getSpeed(),(byte)carv.getChansBlow(),"Машина"+carsCount++,carv.getPeoples()));
-            carv.beforeStart(race.getRacers().get(race.getRacers().size()-1));
-        }
-        for (TruckView truckv:trucks
+        autos.addAll(cars);
+        autos.addAll(trucks);
+        autos.addAll(motos);
+        boolean start = true;
+        for (AutoView av : autos
         ) {
-            race.add(new Truck(truckv.getSpeed(),(byte)truckv.getChansBlow(),"Грузовик"+carsCount++,truckv.getCargo()));
-            truckv.beforeStart(race.getRacers().get(race.getRacers().size()-1));
+            if (!av.ckeckFool()) {
+                av.setStyle("-fx-background-color:RED");
+                start = false;
+            } else {
+                av.setStyle("-fx-background-color:GREEN");
+            }
         }
-        for (MotoView motov:motos
-        ) {
-            race.add(new Moto(motov.getSpeed(),(byte)motov.getChansBlow(),"Мотоцикл"+carsCount++,motov.getSidecar()));
-            motov.beforeStart(race.getRacers().get(race.getRacers().size()-1));
-        }
-        labelSpeed.setText("Имя гонщика");
-        labelBlow.setText("Расстояние");
-        labelBlow.setLayoutY(labelSpeed.getLayoutY());
-        labelBlow.setLayoutX(labelBlow.getLayoutX()+20);
-        labelInfo.setText("");
-        timeline.play();
 
+        if (raceLenght.getText().isEmpty()){
+            start=false;
+            raceLenght.setStyle("-fx-background-color:red");
+        } else {
+            raceLenght.setStyle("-fx-background-color:green");
+        }
+
+        if (start) {
+            race.setRaceDistance(Double.parseDouble(raceLenght.getText()));
+
+            for (CarView carv : cars
+            ) {
+                race.add(new Car(carv.getSpeed(), (byte) carv.getChansBlow(), "Машина" + carsCount++, carv.getPeoples()));
+                carv.beforeStart(race.getRacers().get(race.getRacers().size() - 1));
+            }
+            for (TruckView truckv : trucks
+            ) {
+                race.add(new Truck(truckv.getSpeed(), (byte) truckv.getChansBlow(), "Грузовик" + carsCount++, truckv.getCargo()));
+                truckv.beforeStart(race.getRacers().get(race.getRacers().size() - 1));
+            }
+            for (MotoView motov : motos
+            ) {
+                race.add(new Moto(motov.getSpeed(), (byte) motov.getChansBlow(), "Мотоцикл" + carsCount++, motov.getSidecar()));
+                motov.beforeStart(race.getRacers().get(race.getRacers().size() - 1));
+            }
+            labelSpeed.setText("Имя гонщика");
+            labelBlow.setText("Расстояние");
+            labelBlow.setLayoutY(labelSpeed.getLayoutY());
+            labelBlow.setLayoutX(labelBlow.getLayoutX() + 20);
+            labelInfo.setText("");
+            timeline.play();
+
+        } else {
+            System.out.println("----------");
+        }
     }
-
 
     void updateViews(){
 
@@ -203,9 +239,14 @@ public class RaceController {
         }
     }
     @FXML
-    void clearRace(ActionEvent event) {
+    void newRace(ActionEvent event) {
 
-        System.out.println(race.getRacers().get(0).getRaceInfo().getDistance());
+        race.newRace();
+        placeTable.getItems().clear();
+        for (AutoView aut: autos
+             ) {
+            aut.raceAgain();
+        }
 
     }
 
@@ -213,6 +254,33 @@ public class RaceController {
 
         placeTable.setItems(race.getFinishers());
         timeline.stop();
+        Statistics statistics = new Statistics(carsCount-1,cars.size(),trucks.size(),motos.size(),(int)Math.round(race.getRaceDistance()));
+
+        for (Auto auto: race.getFinishers()
+             ) {
+           if (auto.getClass().equals(com.testcase.testracers.logic.Car.class)){
+               Car car = (Car) auto;
+               statistics.addCar(car);
+
+           }
+            if (auto.getClass().equals(com.testcase.testracers.logic.Truck.class)){
+                Truck truck = (Truck) auto;
+                statistics.addTruck(truck);
+            }
+            if (auto.getClass().equals(com.testcase.testracers.logic.Moto.class)){
+                Moto moto = (Moto) auto;
+                statistics.addMoto(moto);
+            }
+        }
+        ObjectMapper mapper = new ObjectMapper();
+        Date currentDate = new Date();
+        try {
+            mapper.writeValue(new File("race_"+System.currentTimeMillis()/1000+".json"),statistics);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
     }
 
     public void initialize(){
@@ -227,7 +295,7 @@ public class RaceController {
             updateViews();
         } else {
                endRace();
-
+               updateViews();
 
            }
         }
@@ -240,7 +308,7 @@ public class RaceController {
         placeColumn.setCellValueFactory(new PropertyValueFactory<>("place"));
         racerColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
 
-
+        autos = new ArrayList<>();
         raceLenght.textProperty().addListener((observableValue, s, t1) -> {
             if (!Pattern.matches("\\d{0,6}",t1)){
                 raceLenght.setText(s);

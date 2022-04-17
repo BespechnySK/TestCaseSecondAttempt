@@ -27,6 +27,12 @@ public class CarView extends AutoView{
     }
 
     @Override
+    public void raceAgain() {
+        super.raceAgain();
+        this.getChildren().add(pass);
+    }
+
+    @Override
     protected void draw() {
         super.draw();
         this.getChildren().add(pass);

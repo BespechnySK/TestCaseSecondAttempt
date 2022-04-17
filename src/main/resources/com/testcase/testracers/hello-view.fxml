@@ -13,7 +13,7 @@
       <Pane fx:id="circlePane" layoutX="14.0" layoutY="14.0" prefHeight="280.0" prefWidth="280.0" style="-fx-background-color: #FA8072;">
          <children>
             <Button layoutY="254.0" mnemonicParsing="false" onAction="#startRace" prefHeight="25.0" prefWidth="80.0" text="Старт" />
-            <Button layoutX="80.0" layoutY="254.0" mnemonicParsing="false" onAction="#clearRace" text="очистить" />
+            <Button layoutX="80.0" layoutY="254.0" mnemonicParsing="false" onAction="#newRace" text="очистить" />
             <TextField fx:id="raceLenght" layoutY="229.0" prefHeight="25.0" prefWidth="80.0" promptText="расстояние" />
          </children>
       </Pane>

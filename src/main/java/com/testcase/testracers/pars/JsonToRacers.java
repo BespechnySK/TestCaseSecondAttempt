@@ -1,6 +1,7 @@
 package com.testcase.testracers.pars;
 
 public class JsonToRacers {
+    int lenght;
     JsonToCar[] cars;
     JsonToMoto[] motos;
     JsonToTruck[] trucks;
@@ -8,10 +9,11 @@ public class JsonToRacers {
     public JsonToRacers() {
     }
 
-    public JsonToRacers(JsonToCar[] cars, JsonToMoto[] motos, JsonToTruck[] trucks) {
+    public JsonToRacers(JsonToCar[] cars, JsonToMoto[] motos, JsonToTruck[] trucks,int lenght) {
         this.cars = cars;
         this.motos = motos;
         this.trucks = trucks;
+        this.lenght=lenght;
     }
 
     public JsonToCar[] getCars() {
@@ -36,5 +38,13 @@ public class JsonToRacers {
 
     public void setTrucks(JsonToTruck[] trucks) {
         this.trucks = trucks;
+    }
+
+    public int getLenght() {
+        return lenght;
+    }
+
+    public void setLenght(int lenght) {
+        this.lenght = lenght;
     }
 }
