@@ -1,0 +1,19 @@
+{
+    "lenght":1000,
+    "trucks": [{
+      "speed":1,
+      "blow":1,
+      "cargo":199
+    }
+    ],
+     "cars": [{
+      "speed":1,
+      "blow":1,
+      "pass":1
+    }],
+     "motos": [{
+      "speed":1,
+      "blow":1,
+      "side":true
+    }]}
+  
