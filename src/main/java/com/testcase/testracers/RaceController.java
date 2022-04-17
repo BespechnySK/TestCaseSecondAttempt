@@ -2,6 +2,7 @@ package com.testcase.testracers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.testcase.testracers.circleView.RacerDot;
 import com.testcase.testracers.logic.*;
 import com.testcase.testracers.pars.JsonToCar;
 import com.testcase.testracers.pars.JsonToMoto;
@@ -25,6 +26,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -71,10 +74,14 @@ public class RaceController {
     ArrayList<TruckView> trucks;
     ArrayList<MotoView> motos;
     ArrayList<AutoView> autos;
+    ArrayList<RacerDot> dots;
     Race race;
     Timeline timeline;
     KeyFrame keyFrame;
     int carsCount=1;
+    int x;
+    int y;
+    int r;
 
     @FXML
     void fromFile(ActionEvent event) {
@@ -198,18 +205,28 @@ public class RaceController {
 
             for (CarView carv : cars
             ) {
+
                 race.add(new Car(carv.getSpeed(), (byte) carv.getChansBlow(), "Машина" + carsCount++, carv.getPeoples()));
                 carv.beforeStart(race.getRacers().get(race.getRacers().size() - 1));
+                dots.add(new RacerDot(race.getRacers().get(race.getRacers().size() - 1),race));
+                dots.get(dots.size()-1).setRaceCenter(x,y,r);
+                circlePane.getChildren().add(dots.get(dots.size()-1));
             }
             for (TruckView truckv : trucks
             ) {
                 race.add(new Truck(truckv.getSpeed(), (byte) truckv.getChansBlow(), "Грузовик" + carsCount++, truckv.getCargo()));
                 truckv.beforeStart(race.getRacers().get(race.getRacers().size() - 1));
+                dots.add(new RacerDot(race.getRacers().get(race.getRacers().size() - 1),race));
+                dots.get(dots.size()-1).setRaceCenter(x,y,r);
+                circlePane.getChildren().add(dots.get(dots.size()-1));
             }
             for (MotoView motov : motos
             ) {
                 race.add(new Moto(motov.getSpeed(), (byte) motov.getChansBlow(), "Мотоцикл" + carsCount++, motov.getSidecar()));
                 motov.beforeStart(race.getRacers().get(race.getRacers().size() - 1));
+                dots.add(new RacerDot(race.getRacers().get(race.getRacers().size() - 1),race));
+                dots.get(dots.size()-1).setRaceCenter(x,y,r);
+                circlePane.getChildren().add(dots.get(dots.size()-1));
             }
             labelSpeed.setText("Имя гонщика");
             labelBlow.setText("Расстояние");
@@ -236,6 +253,10 @@ public class RaceController {
         for (TruckView truckv:trucks
         ) {
             truckv.updateInfo();
+        }
+        for (RacerDot dott:dots
+             ) {
+            dott.nextStep();
         }
     }
     @FXML
@@ -283,8 +304,27 @@ public class RaceController {
 
     }
 
-    public void initialize(){
+    public void drawRace(){
+        Circle circle = new Circle();
+        circle.setCenterX(x);
+        circle.setCenterY(y);
+        circle.setRadius(r+10);
+        circle.setFill(Color.BLACK);
+        Circle circle1 = new Circle();
+        circle1.setCenterX(x);
+        circle1.setCenterY(y);
+        circle1.setRadius(r-10);
+        circle1.setFill(Color.GRAY);
+        circlePane.getChildren().add(circle);
+        circlePane.getChildren().add(circle1);
+    }
 
+    public void initialize(){
+        this.x=150;//(int)Math.round(circlePane.getPrefWidth()/2);
+        this.y=130;//(int)Math.round(circlePane.getPrefHeight()/2);
+        this.r=80;
+        drawRace();
+        dots = new ArrayList<>();
         cars=new ArrayList<>();
         trucks=new ArrayList<>();
         motos=new ArrayList<>();
