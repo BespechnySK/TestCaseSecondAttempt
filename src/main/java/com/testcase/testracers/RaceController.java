@@ -268,6 +268,10 @@ public class RaceController {
              ) {
             aut.raceAgain();
         }
+        for (RacerDot dot:dots
+             ) {
+            circlePane.getChildren().remove(dot);
+        }
 
     }
 
